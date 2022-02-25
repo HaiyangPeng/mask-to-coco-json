@@ -5,6 +5,7 @@ from tqdm import tqdm
 import cv2
 import mask_to_coco_json
 import json
+import argparse
 
  
 ROOT_DIR = '/path/to/your/project/mask-to-coco-json/examples'
@@ -33,8 +34,24 @@ CATEGORIES = [
     }
 ]
 
+
+def parse_args():
+    
+    parser = argparse.ArgumentParser(description='args')
+
+    parser.add_argument('--single_mask_flag',
+                        help='choose to generate a segmentation mask for each category in an image',
+                        type=str,
+                        default=False
+                        )
+
+    args = parser.parse_args()
+
+    return args
  
 def main():
+    
+    args = parse_args()
  
     coco_output = {
         "info": INFO,
@@ -72,11 +89,13 @@ def main():
         for category_dict in CATEGORIES:
             color = category_dict['color']
             class_id = category_dict['id']
+            class_name = category_dict['name']
             category_info = {'id': class_id, 'is_crowd': 0}  # do not support the crowded type
             
             binary_mask = np.all(mask == color, axis=-1).astype('uint8')  # quick search
             
-            cv2.imwrite(os.path.join(SINGLE_MASK_DIR, base_name), binary_mask * 255)            
+            if args.single_mask_flag:
+                cv2.imwrite(os.path.join(SINGLE_MASK_DIR, os.path.splitext(base_name)[0] + '_' + class_name + '.png'), binary_mask * 255)            
             
             annotation_info, annotation_id = mask_to_coco_json.create_annotation_infos(
                 segmentation_id, image_id, category_info, binary_mask)
