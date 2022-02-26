@@ -1,5 +1,5 @@
 ## Mask-to-coco-json
-This repo aims to offer a concise and faste script to complete the conversion from BGR masks to coco format.
+This repo aims to offer a concise and faste script to complete the conversion from BGR masks to coco format. Maskrcnn can use the conversion json for training.
 
 This repo is based on https://github.com/waspinator/pycococreator, and makes some improvements:
 - Use faster operations to replace some time-consuming ones, deletes some unnecessary ones. 
@@ -28,10 +28,6 @@ Note: only need image and bgr mask pairs. You can choose to generate a segmentat
 
 In this repo, facade dataset is used as the examples. Dowload it by https://cmp.felk.cvut.cz/~tylecr1/facade/CMP_facade_DB_base.zip.
 
-For example:
-| ![image](./examples/images/cmp_b0001.jpg) | ![mask (bgr)](./examples/images/cmp_b0001.png)|![single_mask](./examples/single_masks/cmp_b0001_xx.png) |![check_bbox](./examples/bbox.png) |
-|:---:|:---:|:---:|:---:|
-
 ### Run the script 
 There are some args needed to be defined in the main.py:
 - ROOT_DIR: /path/to/your/project/mask-to-coco-json/examples.
@@ -57,12 +53,17 @@ Finally, run:
 `python main.py`
 
 The following files will be generated:
-- Coco format json: train.json
-- Single mask for the category of 'xx': cmp_b0001_xx.png (optional)
+- Coco format json: `train.json`
+- `Single mask` for the category of 'xx': cmp_b0001_xx.png (optional)
 
 ### Check the result
 Modify the path args and then run:
 
 `python check_bbox.py`
 
-bbox.png will be generated.
+`bbox.png` will be generated.
+
+### Examples
+
+| ![image](./examples/images/cmp_b0001.jpg) | ![mask (bgr)](./examples/images/cmp_b0001.png)|![single_mask](./examples/single_masks/cmp_b0001_xx.png) |![check_bbox](./examples/bbox.png) |
+|:---:|:---:|:---:|:---:|
